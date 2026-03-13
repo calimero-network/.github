@@ -1,41 +1,101 @@
-<h1 align="center">Welcome to Calimero Network!</h1>
+<h1 align="center">Calimero Network</h1>
 
-</br>
 <p align="center">
   <i>
-    A place designed to shake up the digital world by prioritizing what matters most: data ownership, control over access, and freedom in your creations. Calimero Network offers an infrastructure for those committed to building the new digital landscape where data ownership and user autonomy are non-negotiable. It's a shift towards a peer-to-peer ecosystem where applications are built on principles of decentralization, extending with verifiable off-chain computing and self-sovereignty.
+    A framework for distributed, peer-to-peer applications with automatic conflict-free data synchronization,<br/>
+    user-owned data, and verifiable off-chain computing.
   </i>
 </p>
-</br>
 
 <p align="center">
-  <a href="https://discord.gg/urJeMtRRMu">
-    <img src="https://img.shields.io/badge/DEV_SUPPORT-BE0303">
-  </a>
+  <a href="https://calimero.network" target="_blank"><img src="https://img.shields.io/badge/Website-calimero.network-black?style=flat-square" /></a>
+  <a href="https://docs.calimero.network" target="_blank"><img src="https://img.shields.io/badge/Docs-docs.calimero.network-black?style=flat-square" /></a>
+  <a href="https://discord.gg/urJeMtRRMu" target="_blank"><img src="https://img.shields.io/badge/Discord-Dev_Support-5865F2?style=flat-square&logo=discord&logoColor=white" /></a>
+  <a href="https://x.com/CalimeroNetwork" target="_blank"><img src="https://img.shields.io/badge/Twitter-@CalimeroNetwork-black?style=flat-square&logo=x&logoColor=white" /></a>
 </p>
 
-</br>
-
-## Docs
-
-| Website                                                           | Description                      | Repo                                                                                         |
-| ----------------------------------------------------------------- | -------------------------------- | -------------------------------------------------------------------------------------------- |
-| [calimero-network.github.io](https://calimero-network.github.io/) | Calimero Developer Documentation | [calimero-network.github.io](https://github.com/calimero-network/calimero-network.github.io) |
+---
 
 ## Core
 
-| Website                                                           | Description                      | Repo                                                                                         |
-| ----------------------------------------------------------------- | -------------------------------- | -------------------------------------------------------------------------------------------- |
-| [calimero-network.github.io](https://calimero-network.github.io/) | Calimero Core Project | [calimero-network/core](https://github.com/calimero-network/core) |
+The heart of the Calimero stack — node runtime, Rust SDK, CLI, and all peer-to-peer infrastructure.
 
-## Dev Tools
+| Repo | Description |
+| --- | --- |
+| [Core](https://github.com/calimero-network/core) | Node runtime (`merod`), Rust application SDK, `meroctl` CLI, CRDT storage engine, libp2p networking, and WASM execution environment. Also includes [`mero-sign`](https://github.com/calimero-network/core/tree/master/tools/mero-sign) — the Ed25519 bundle signing tool. |
 
-| Website                                                                    | Description                     | Repo                                                                       |
-| -------------------------------------------------------------------------- | ------------------------------- | -------------------------------------------------------------------------- |
-| [admin-dashboard](https://calimero-network.github.io/admin-dashboard/)     | Node Admin Interface            | [admin-dashboard](https://github.com/calimero-network/admin-dashboard)     |
+---
 
-## Example Apps
+## Desktop
 
-| Website                                                                        | Description                         | Repo                                                                           |
-| ------------------------------------------------------------------------------ | ----------------------------------- | ------------------------------------------------------------------------------ |
-|                                                                                | Battleships Game             | [battleships-application](https://github.com/calimero-network/battleships) |
+| Repo | Description |
+| --- | --- |
+| [Calimero Desktop](https://github.com/calimero-network/tauri-app) | Cross-platform GUI for managing nodes, identities, contexts, and installed apps. [Download at calimero.network/download](https://calimero.network/download). |
+
+---
+
+## SDKs & Clients
+
+Build Calimero applications or connect to nodes from any language.
+
+### Building Apps
+
+| Repo | Language | Description |
+| --- | --- | --- |
+| [core/crates/sdk](https://github.com/calimero-network/core/tree/master/crates/sdk) | Rust | Application SDK — macros, CRDT storage primitives, event emitters, and state helpers for building Calimero WASM apps. |
+| [calimero-sdk-js](https://github.com/calimero-network/calimero-sdk-js) | TypeScript | JavaScript/TypeScript SDK for writing Calimero P2P applications with CRDT-based state. |
+
+### Connecting to Nodes
+
+| Repo | Language | Description |
+| --- | --- | --- |
+| [calimero-client-js](https://github.com/calimero-network/calimero-client-js) | TypeScript | Browser and Node.js client — authentication, JSON-RPC calls, WebSocket event streaming, and SSO token support. |
+| [calimero-client-py](https://github.com/calimero-network/calimero-client-py) | Python | Python client bindings for interacting with Calimero nodes — ABI tooling and automation recipes. |
+
+---
+
+## Developer Tools
+
+| Repo | Description |
+| --- | --- |
+| [merobox](https://github.com/calimero-network/merobox) | Docker-based toolchain for spinning up local multi-node Calimero networks. Supports reusable workflow files for dev, testing, and CI. |
+| [mero-devtools-js](https://github.com/calimero-network/mero-devtools-js) | ABI Codegen — generate typed TypeScript clients from Rust application ABIs. Includes `create-mero-app` for scaffolding new apps. |
+| [app-registry](https://github.com/calimero-network/app-registry) | Production registry for signed Calimero app bundles. Includes `calimero-registry` CLI for bundling and publishing, and a web frontend for browsing and uploading apps. |
+| [admin-dashboard](https://github.com/calimero-network/admin-dashboard) | Web UI for node administration — member management, context inspection, and metrics. |
+| [design-system](https://github.com/calimero-network/design-system) | Shared UI component library and design tokens used across Calimero frontends. |
+| [homebrew-tap](https://github.com/calimero-network/homebrew-tap) | Homebrew tap for macOS installation of `merod`, `meroctl`, and `merobox`. |
+
+---
+
+## Example Applications
+
+Reference apps covering the full range from simple storage to real-time collaboration and privacy-preserving workflows.
+
+| Repo | Description |
+| --- | --- |
+| [KV Store](https://github.com/calimero-network/kv-store) | Minimal Rust key-value store — the canonical starter example for Calimero apps. |
+| [KV StoreJS](https://github.com/calimero-network/kv-store-js) | TypeScript version of the KV store — good starting point for JS-first developers. |
+| [Mero Chat](https://github.com/calimero-network/mero-chat) | P2P messaging platform — real-time group and direct messaging built on Calimero contexts. |
+| [MeroSign](https://github.com/calimero-network/MeroSign) | Privacy-first e-signature platform — peer-to-peer document signing and verification. |
+| [Battleships](https://github.com/calimero-network/battleships) | Turn-based multiplayer game with private hidden boards — demonstrates encrypted context state and Merobox workflow files. |
+| [File Sharing](https://github.com/calimero-network/demo-blob-app) | File-style blob payload handling with a wired frontend — demonstrates binary data in Calimero apps. |
+| [Only Peers - P2P Forum](https://github.com/calimero-network/only-peers-client) | Minimal peer-to-peer client demo — useful reference for direct node-to-node communication patterns. |
+| [core/apps](https://github.com/calimero-network/core/tree/master/apps) | Built-in reference apps in the core repo: `collaborative-editor`, `private-data`, `team-metrics`, and more. |
+| [Blockchain Integrations](https://github.com/calimero-network/demo-blockchain-integrations) | Examples integrating Calimero with NEAR, Ethereum, ICP, and Stellar for on-chain attestations. |
+
+---
+
+## Documentation
+
+| Site | Repo | Description |
+| --- | --- | --- |
+| [docs.calimero.network](https://docs.calimero.network) | [docs](https://github.com/calimero-network/docs) | Developer documentation — architecture, getting started, SDK guides, CLI reference, and tooling overview. |
+
+---
+
+## Research & Integrations
+
+| Repo | Description |
+| --- | --- |
+| [mero-tee](https://github.com/calimero-network/mero-tee) | Trusted Execution Environment integration for verifiable off-chain computation. |
+| [contracts](https://github.com/calimero-network/contracts) | On-chain smart contracts used for identity anchoring and multi-chain attestation. |
