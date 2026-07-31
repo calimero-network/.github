@@ -133,7 +133,6 @@ Real apps, not toy demos — each one is a self-hosted replacement for something
 | Repo | Description |
 | --- | --- |
 | [documentation](https://github.com/calimero-network/documentation) | [docs.calimero.network](https://docs.calimero.network) — concepts, build guides, operations, API reference. Start here for anything conceptual. |
-| [proposals](https://github.com/calimero-network/proposals) | Calimero Improvement Proposals (CIPs) — the process for protocol changes. |
 | [design-system](https://github.com/calimero-network/design-system) | Shared UI components and design tokens across Calimero frontends. |
 
 > Deep reference for `core` lives in-repo and ships to
