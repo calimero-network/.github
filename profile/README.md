@@ -1,15 +1,16 @@
-<h1 align="center">Calimero Network</h1>
+<h1 align="center">Calimero</h1>
 
 <p align="center">
   <i>
-    Self-hosted, peer-to-peer applications where the operator can't read your data.<br/>
-    CRDT state sync, local-first governance, WASM execution.
+    A confidential cloud for collaborative apps.<br/>
+    Your app runs on attested TEE nodes. Nobody operating them can read its data, including us.
   </i>
 </p>
 
 <p align="center">
   <a href="https://calimero.network" target="_blank"><img src="https://img.shields.io/badge/Website-calimero.network-black?style=flat-square" /></a>
-  <a href="https://docs.calimero.network" target="_blank"><img src="https://img.shields.io/badge/Docs-docs.calimero.network-black?style=flat-square" /></a>
+  <a href="https://cloud.calimero.network" target="_blank"><img src="https://img.shields.io/badge/Cloud-cloud.calimero.network-black?style=flat-square" /></a>
+  <a href="https://calimero-network.github.io/core/" target="_blank"><img src="https://img.shields.io/badge/Docs-calimero--network.github.io%2Fcore-black?style=flat-square" /></a>
   <a href="https://apps.calimero.network" target="_blank"><img src="https://img.shields.io/badge/Apps-apps.calimero.network-black?style=flat-square" /></a>
   <a href="https://discord.gg/urJeMtRRMu" target="_blank"><img src="https://img.shields.io/badge/Discord-Dev_Support-5865F2?style=flat-square&logo=discord&logoColor=white" /></a>
   <a href="https://x.com/CalimeroNetwork" target="_blank"><img src="https://img.shields.io/badge/Twitter-@CalimeroNetwork-black?style=flat-square&logo=x&logoColor=white" /></a>
@@ -19,40 +20,40 @@
 
 ## What it is
 
-A Calimero app runs on nodes its users control. State is a CRDT set replicated
-peer-to-peer over libp2p, encrypted so that whoever operates the infrastructure
-sees metadata and nothing else. Application logic is WASM; membership and
-permissions are governed by a causal operation log rather than a server.
+You write an app in Rust or JavaScript, compiled to WASM, and publish it as a
+signed package. Calimero runs each app instance on a small cluster of Intel TDX
+nodes, replicated by its own Raft log.
 
-Practically: shared drives, chat, issue trackers, spreadsheets, design tools —
-the collaborative SaaS shape, without the vendor holding the plaintext.
+- **Clients check the node before they talk to it.** A client reaches a node over
+  a sealed channel, which it opens only after verifying the node's hardware
+  attestation. People sign in with passkeys.
+- **Nobody can quietly swap the code.** New code or a new node image reaches an
+  app's data only after the app's approver says so, on a page the node serves
+  itself. Every such decision is attested.
 
-## Quickstart
+Practically: shared documents, chat, issue trackers, spreadsheets, internal
+tools. Collaborative SaaS, without a vendor who can read the plaintext.
 
-```bash
-brew install calimero-network/tap/merod calimero-network/tap/meroctl
-cargo install --git https://github.com/calimero-network/cargo-mero cargo-mero
-
-cargo mero new my-app     # scaffold
-cargo mero guide          # the whole path, start to installable bundle
-```
-
-Prefer a GUI? [Calimero Desktop](https://calimero.network/download) runs a node,
-manages contexts, and installs apps from the registry.
-
-## Start here
+## Get started
 
 | I want to… | Go to |
 | --- | --- |
-| Understand the model | [Concepts](https://docs.calimero.network) — contexts, identity, CRDT state, privacy |
-| Write an app in Rust | [cargo-mero](https://github.com/calimero-network/cargo-mero) + [SDK](https://github.com/calimero-network/core/tree/master/crates/sdk) |
-| Write an app in TypeScript | [calimero-sdk-js](https://github.com/calimero-network/calimero-sdk-js) |
-| Call a node from my frontend | [mero-js](https://github.com/calimero-network/mero-js) · [mero-react](https://github.com/calimero-network/mero-react) |
-| Run nodes locally / in CI | [merobox](https://github.com/calimero-network/merobox) |
-| Operate a node | [Operate docs](https://calimero-network.github.io/core/operate/) |
-| Read the protocol spec | [Protocol Reference](https://calimero-network.github.io/core/protocol/overview/) |
-| Propose a protocol change | [proposals](https://github.com/calimero-network/proposals) (CIPs) |
-| See it working | [Example apps](#example-applications) |
+| Deploy an app without running anything | [Calimero Cloud](https://cloud.calimero.network) |
+| Understand how it works | [Cloud overview](https://calimero-network.github.io/core/cloud/overview/) · [Protocol reference](https://calimero-network.github.io/core/protocol/overview/) |
+| Write an app | [Build](https://calimero-network.github.io/core/build/): the Rust SDK and `cargo mero`, in [core](https://github.com/calimero-network/core) |
+| Call an app from a frontend or a script | [mero-js](https://github.com/calimero-network/mero-js) · [mero-react](https://github.com/calimero-network/mero-react) · [calimero-client-py](https://github.com/calimero-network/calimero-client-py) |
+| Run a cluster yourself | [Operate](https://calimero-network.github.io/core/operate/) |
+| See real apps | [apps](https://github.com/calimero-network/apps) |
+| Coming from the peer-to-peer release | [Coming from v1](https://calimero-network.github.io/core/cloud/coming-from-v1/) |
+
+Try it locally from a checkout of [core](https://github.com/calimero-network/core):
+
+```bash
+cargo run -p merod -- local                  # a 3-node development cluster on 127.0.0.1:2501-2503
+cargo install --path crates/meroctl
+meroctl node add local http://127.0.0.1:2501/ --allow-mock
+meroctl login --dev-passkey ./dev-passkey.json --name ada
+```
 
 ---
 
@@ -60,90 +61,53 @@ manages contexts, and installs apps from the registry.
 
 | Repo | Description |
 | --- | --- |
-| [core](https://github.com/calimero-network/core) | Node runtime (`merod`), operator CLI (`meroctl`), Rust SDK, CRDT storage engine, libp2p networking, WASM execution. The heart of the stack. |
-| [app-registry](https://github.com/calimero-network/app-registry) | Registry for signed app bundles (JCS + Ed25519, SemVer-immutable, WASM by IPFS CID). Live at [apps.calimero.network](https://apps.calimero.network). |
-| [mero-tee](https://github.com/calimero-network/mero-tee) | TEE infrastructure — KMS, locked images, attestation. |
-| [boot-node](https://github.com/calimero-network/boot-node) | Bootstrap/relay node deployment. |
+| [core](https://github.com/calimero-network/core) | The node (`merod`), the CLI (`meroctl`), the Rust SDK, `cargo mero`, and the docs. The heart of the stack. |
+| [mero-tee](https://github.com/calimero-network/mero-tee) | TDX node images, mero-kms, signed releases, and the public [attestation verifier](https://github.com/calimero-network/mero-tee/tree/master/attestation-verifier). |
+| [app-registry](https://github.com/calimero-network/app-registry) | Where apps are published and installed from. Ed25519-signed manifests; published versions are immutable. Live at [apps.calimero.network](https://apps.calimero.network). |
 
 ## Building apps
 
 | Repo | Language | Description |
 | --- | --- | --- |
-| [cargo-mero](https://github.com/calimero-network/cargo-mero) | Rust | `cargo mero` — scaffold, build to WASM with embedded ABI, node-free tests, signed `.mpk` bundles. Start here. |
-| [core/crates/sdk](https://github.com/calimero-network/core/tree/master/crates/sdk) | Rust | Application SDK — proc macros, CRDT collections, events, state helpers. |
-| [calimero-sdk-js](https://github.com/calimero-network/calimero-sdk-js) | TypeScript | Write app logic in TS/JS, compiled to WASM via QuickJS. |
-| [mero-devtools-js](https://github.com/calimero-network/mero-devtools-js) | TypeScript | ABI parser and typed-client codegen from Rust app ABIs. |
-| [mero-mcp](https://github.com/calimero-network/mero-mcp) | — | MCP server — exposes node admin and every app ABI method as tools for AI agents. |
-| [calimero-skills](https://github.com/calimero-network/calimero-skills) | — | Agent skills for Calimero development (SDK, clients, registry, CLI). |
+| [core/crates/sdk](https://github.com/calimero-network/core/tree/master/crates/sdk) | Rust | The app SDK: macros, CRDT collections, events. |
+| [core/tools/cargo-mero](https://github.com/calimero-network/core/tree/master/tools/cargo-mero) | Rust | `cargo mero`: scaffold, build to WASM with an embedded ABI, test, and sign `.mpk` packages. |
+| [calimero-sdk-js](https://github.com/calimero-network/calimero-sdk-js) | TypeScript | Write app logic in TypeScript, compiled to WASM. |
+| [mero-devtools-js](https://github.com/calimero-network/mero-devtools-js) | TypeScript | ABI parser and typed-client codegen from an app's ABI. |
+| [mero-mcp](https://github.com/calimero-network/mero-mcp) | — | MCP server: exposes a cluster and every app method as tools for AI agents. |
+| [calimero-skills](https://github.com/calimero-network/calimero-skills) | — | Agent skills for building on Calimero. |
 
-## Connecting to nodes
+## Connecting to a cluster
 
 | Repo | Language | Description |
 | --- | --- | --- |
-| [mero-js](https://github.com/calimero-network/mero-js) | TypeScript | Auth, admin API, JSON-RPC, live event streams. Browser, Node, edge; zero dependencies. |
+| [mero-js](https://github.com/calimero-network/mero-js) | TypeScript | Attestation check, sealed channel, passkey sign-in, calls, events, approvals. Browser, Node and edge. |
 | [mero-react](https://github.com/calimero-network/mero-react) | TypeScript | React hooks and provider over `mero-js`. |
-| [calimero-client-py](https://github.com/calimero-network/calimero-client-py) | Python | Python client — automation and scripting. |
-| [swift-sdk](https://github.com/calimero-network/swift-sdk) | Swift | MeroKit — iOS/macOS, incl. SSO and token refresh. |
-| [kotlin-sdk](https://github.com/calimero-network/kotlin-sdk) | Kotlin | Android — auth, JSON-RPC, Compose login UI. |
+| [calimero-client-py](https://github.com/calimero-network/calimero-client-py) | Python | Python client for automation and scripting. |
+| [swift-sdk](https://github.com/calimero-network/swift-sdk) | Swift | iOS and macOS. |
+| [kotlin-sdk](https://github.com/calimero-network/kotlin-sdk) | Kotlin | Android. |
 
-## Running & operating
-
-| Repo | Description |
-| --- | --- |
-| [merobox](https://github.com/calimero-network/merobox) | Docker-based local multi-node networks with declarative workflow files. The standard way to test and run e2e in CI. |
-| [tauri-app](https://github.com/calimero-network/tauri-app) | Calimero Desktop — cross-platform node, context, and app manager. [Download](https://calimero.network/download). |
-| [admin-dashboard](https://github.com/calimero-network/admin-dashboard) | Web UI for node administration — contexts, members, apps, metrics. |
-| [auth-frontend](https://github.com/calimero-network/auth-frontend) | Login, context selection, and permission-grant UI for apps. |
-| [homebrew-tap](https://github.com/calimero-network/homebrew-tap) | macOS install for `merod`, `meroctl`, `cargo-mero`, `mero-abi`, `mero-relayer`. |
-| [install-sh](https://github.com/calimero-network/install-sh) | Install scripts for Calimero binaries. |
-
-## Example applications
-
-Real apps, not toy demos — each one is a self-hosted replacement for something you already pay for.
+## Apps
 
 | Repo | Description |
 | --- | --- |
-| [kv-store](https://github.com/calimero-network/kv-store) | Minimal Rust key-value app. The canonical starter. |
-| [kv-store-js](https://github.com/calimero-network/kv-store-js) | Same, in TypeScript, with a React frontend. |
-| [mero-chat](https://github.com/calimero-network/mero-chat) | P2P groups and DMs. |
-| [mero-meet](https://github.com/calimero-network/mero-meet) | Video calling — WASM signaling, WebRTC media, no server. |
-| [mero-design](https://github.com/calimero-network/mero-design) | Collaborative design tool. |
-| [mero-pixart](https://github.com/calimero-network/mero-pixart) | Collaborative image editor — layers, masks, curves. |
-| [p2p-sheets](https://github.com/calimero-network/p2p-sheets) | Collaborative spreadsheet — CRDT inputs, derive-on-read recalc, live cursors. |
-| [mero-calendar](https://github.com/calimero-network/mero-calendar) | Shared team calendars and private events. |
-| [MeroSign](https://github.com/calimero-network/MeroSign) | Privacy-first e-signature and document verification. |
-
-<details>
-<summary>More examples — games, blobs, workshop builds</summary>
-
-| Repo | Description |
-| --- | --- |
-| [battleships](https://github.com/calimero-network/battleships) | Turn-based game with private hidden boards — encrypted context state + merobox workflows. |
-| [mero-blocks](https://github.com/calimero-network/mero-blocks) | Minecraft-style multiplayer voxel sandbox with no game server; the world is a context. |
-| [merraria](https://github.com/calimero-network/merraria) | 45 kB Terraria-style 2D multiplayer mining sandbox. |
-| [demo-blob-app](https://github.com/calimero-network/demo-blob-app) | Blob/binary payload handling with a wired frontend. |
-| [only-peers-client](https://github.com/calimero-network/only-peers-client) | Minimal P2P forum client. |
-| [core/apps](https://github.com/calimero-network/core/tree/master/apps) | In-repo reference apps: `collaborative-editor`, `private-data`, `team-metrics`, and more. |
+| [apps](https://github.com/calimero-network/apps) | Every Calimero app in one monorepo: design tools, spreadsheets, chat, calls, document signing, games, and more. Shared toolchain, one CI, one release path to the registry. |
 | [workshop-apps](https://github.com/calimero-network/workshop-apps) | Apps built live at workshops, one per branch. |
 
-</details>
-
-## Documentation & governance
+## Tools & design
 
 | Repo | Description |
 | --- | --- |
-| [documentation](https://github.com/calimero-network/documentation) | [docs.calimero.network](https://docs.calimero.network) — concepts, build guides, operations, API reference. Start here for anything conceptual. |
+| [homebrew-tap](https://github.com/calimero-network/homebrew-tap) | macOS install for `meroctl`, `cargo-mero` and `mero-abi`. |
+| [install-sh](https://github.com/calimero-network/install-sh) | Install scripts for Calimero binaries. |
 | [design-system](https://github.com/calimero-network/design-system) | Shared UI components and design tokens across Calimero frontends. |
 
-> Deep reference for `core` lives in-repo and ships to
-> [calimero-network.github.io/core](https://calimero-network.github.io/core/) —
-> four tracks: **Build**, **Operate**, **Protocol Reference**, **Contribute**.
-> Same pattern for [mero-mcp](https://calimero-network.github.io/mero-mcp/).
+> Reference documentation for `core` is built from the repo and published at
+> [calimero-network.github.io/core](https://calimero-network.github.io/core/),
+> in five tracks: **Cloud**, **Build**, **Operate**, **Protocol Reference** and **Contribute**.
 
 ## Contributing
 
-Issues and PRs welcome across every repo. Protocol-level changes go through
-[CIPs](https://github.com/calimero-network/proposals). Questions and dev support:
+Issues and PRs are welcome across every repo. Questions and developer support:
 [Discord](https://discord.gg/urJeMtRRMu).
 
 Licensed MIT OR Apache-2.0.
