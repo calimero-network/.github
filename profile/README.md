@@ -1,8 +1,8 @@
 <h1 align="center">Calimero</h1>
 
 <p align="center">
-  <b>The confidential cloud for applications.</b><br/>
-  <i>Your app's data is visible only to your users, and they can prove it.</i>
+  <b>Your app's whole backend, like Firebase. Except nobody can read your data, not even us.</b><br/>
+  <i>Auth, database, functions, realtime, storage and hosting in one deploy, running in verified confidential hardware.</i>
 </p>
 
 <p align="center">
@@ -15,14 +15,29 @@
 
 ---
 
-## Don't trust us. Verify us.
+## Everything a backend needs, sealed
 
-Every cloud app today asks its users to trust whoever runs the servers. Calimero
-removes the operator from that trust, including us.
+Firebase made building an app fast: sign-in, a database, functions and hosting,
+all in one place. The catch is that the provider can read everything. Calimero
+gives you the same building blocks, but each app runs inside attested Intel TDX
+hardware, so the people running the servers, including us, can't see the data.
+And your users don't have to take our word for it: their client checks.
 
-You write an app in Rust, build it to WebAssembly and deploy it as one signed
-package. Each instance runs on a small cluster of attested Intel TDX nodes,
-replicated by its own log.
+| You need | Calimero gives you |
+| --- | --- |
+| Auth | Passkey sign-in, sessions and scoped API keys, built in |
+| Database | Replicated app state: maps, sets, tables with indexes, rich text |
+| Functions | App methods in Rust, plus compute jobs, timers and pipelines |
+| Realtime | Live events and presence streamed to every client |
+| Storage | Sealed file and blob storage |
+| Search | Full-text search over your app's data |
+| Hosting | Your frontend served from the same verified nodes |
+| Typed clients | TypeScript, Python, Swift and Kotlin, generated from your app |
+
+You write the app in Rust, build it to WebAssembly and deploy it as one signed
+package. Each instance runs on its own small cluster of attested nodes.
+
+## Why it's different: don't trust us, verify us
 
 - **Private by construction.** Data is sealed inside the enclave and on disk.
   Disk keys are released only to nodes that pass attestation, so nobody who runs
@@ -30,9 +45,8 @@ replicated by its own log.
 - **Verifiable by every user.** Clients check a node's hardware attestation
   against signed releases before sending a byte. Every answer comes back with a
   signed receipt.
-- **Simple to build and run.** One SDK, one signed package, typed clients
-  generated for you, passkey sign-in built in. Run it on Calimero Cloud, a
-  dedicated cluster, or your own TDX hosts.
+- **Run it anywhere.** Calimero Cloud, a dedicated cluster, or your own TDX
+  hosts. Same app, no lock-in to our hardware.
 - **Nothing changes without consent.** New code or a new node image reaches an
   app's data only after the app's approver says yes.
 
