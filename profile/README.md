@@ -65,7 +65,6 @@ docs, spreadsheets, CRM) whose host can't read them.
 | Call an app from a frontend or a script | [mero-js](https://github.com/calimero-network/mero-js) · [mero-react](https://github.com/calimero-network/mero-react) · [calimero-client-py](https://github.com/calimero-network/calimero-client-py) |
 | Run a cluster yourself | [Operate](https://calimero-network.github.io/core/operate/) |
 | See real apps | [apps](https://github.com/calimero-network/apps): 27 apps, from chat to e-voting |
-| Coming from the peer-to-peer release | [Coming from v1](https://calimero-network.github.io/core/cloud/coming-from-v1/) |
 
 Try it locally from a checkout of [core](https://github.com/calimero-network/core):
 
