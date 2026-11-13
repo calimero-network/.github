@@ -70,9 +70,7 @@ meroctl login --dev-passkey ./dev-passkey.json --name ada
 | Repo | Language | Description |
 | --- | --- | --- |
 | [core/crates/sdk](https://github.com/calimero-network/core/tree/master/crates/sdk) | Rust | The app SDK: macros, CRDT collections, events. |
-| [core/tools/cargo-mero](https://github.com/calimero-network/core/tree/master/tools/cargo-mero) | Rust | `cargo mero`: scaffold, build to WASM with an embedded ABI, test, and sign `.mpk` packages. |
 | [calimero-sdk-js](https://github.com/calimero-network/calimero-sdk-js) | TypeScript | Write app logic in TypeScript, compiled to WASM. |
-| [mero-devtools-js](https://github.com/calimero-network/mero-devtools-js) | TypeScript | ABI parser and typed-client codegen from an app's ABI. |
 | [mero-mcp](https://github.com/calimero-network/mero-mcp) | — | MCP server: exposes a cluster and every app method as tools for AI agents. |
 | [calimero-skills](https://github.com/calimero-network/calimero-skills) | — | Agent skills for building on Calimero. |
 
@@ -99,7 +97,6 @@ meroctl login --dev-passkey ./dev-passkey.json --name ada
 | --- | --- |
 | [homebrew-tap](https://github.com/calimero-network/homebrew-tap) | macOS install for `meroctl`, `cargo-mero` and `mero-abi`. |
 | [install-sh](https://github.com/calimero-network/install-sh) | Install scripts for Calimero binaries. |
-| [design-system](https://github.com/calimero-network/design-system) | Shared UI components and design tokens across Calimero frontends. |
 
 > Reference documentation for `core` is built from the repo and published at
 > [calimero-network.github.io/core](https://calimero-network.github.io/core/),
